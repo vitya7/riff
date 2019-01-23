@@ -3,10 +3,10 @@
 #include "header.hpp"
 
 #include <fstream>
+#include <algorithm>
 
 namespace riff
 {
-
     constexpr fourcc RIFF_ID = { 'R', 'I', 'F', 'F' };
 
     class riff_stream

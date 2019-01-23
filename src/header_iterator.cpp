@@ -30,9 +30,16 @@ namespace riff
 
     header_iterator::reference
     header_iterator::
-    operator * ()
+    operator * () const
     {
         return m_header;
+    }
+
+    header_iterator::pointer
+    header_iterator::
+    operator -> () const
+    {
+        return &m_header;
     }
 
     header_iterator &
@@ -41,7 +48,7 @@ namespace riff
     {
         if( p_stream )
         {
-            p_stream->m_stream.seekg( m_header.size, stream_type::wrapped_stream_type::cur );
+            p_stream->m_stream.seekg( m_header.size + m_header.size % 2, stream_type::wrapped_stream_type::cur );
 
             update_proxy_object();
         }

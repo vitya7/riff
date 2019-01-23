@@ -26,7 +26,9 @@ namespace riff
 
         bool end_of_stream () const;
 
-        reference operator * ();
+        reference operator * () const;
+
+        pointer operator -> () const;
 
         header_iterator & operator ++ ();
 
