@@ -7,7 +7,7 @@ namespace riff
     class header_iterator
     {
     public :
-        using value_type	    = header;
+        using value_type        = header;
         using pointer	        = header const*;
         using reference	        = header const&;
         using difference_type   = void;
