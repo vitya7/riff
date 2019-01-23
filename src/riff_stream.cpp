@@ -28,7 +28,7 @@ namespace riff
     {
         m_path = path;
 
-        m_stream.open( path, stream_type::binary );
+        m_stream.open( path, wrapped_stream_type::binary );
 
         init();
     }
@@ -42,11 +42,10 @@ namespace riff
 
     void
     riff_stream::
-    reset ()
+    reopen ()
     {
-        m_stream.seekg( 0 );
-
-        init();
+        close();
+        open( m_path );
     }
 
     std::string const&
@@ -56,7 +55,7 @@ namespace riff
         return m_path;
     }
 
-    riff_stream::stream_type const&
+    riff_stream::wrapped_stream_type const&
     riff_stream::
     get_ifstream () const&
     {
@@ -75,14 +74,6 @@ namespace riff
     get_format () const&
     {
         return m_format;
-    }
-
-    template <class T>
-    void
-    riff_stream::
-    read (T & x)
-    {
-        m_stream.read( reinterpret_cast <stream_type::char_type*> ( &x ), sizeof( x ) );
     }
 
     void

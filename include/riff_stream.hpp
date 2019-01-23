@@ -13,7 +13,7 @@ namespace riff
     {
     public :
 
-        using stream_type = std::ifstream;
+        using wrapped_stream_type = std::ifstream;
 
         riff_stream () = default;
 
@@ -30,11 +30,11 @@ namespace riff
 
         void close ();
 
-        void reset ();
+        void reopen ();
 
         std::string const& get_path () const&;
 
-        stream_type const& get_ifstream () const&;
+        wrapped_stream_type const& get_ifstream () const&;
 
         header const& get_header () const&;
 
@@ -43,16 +43,26 @@ namespace riff
         template <class T>
         void read (T &);
 
+        friend class header_iterator;
+
     private :
 
         void init ();
 
         std::string m_path;
 
-        stream_type m_stream;
+        wrapped_stream_type m_stream;
 
         header m_header;
 
         fourcc m_format;
     };
+
+    template <class T>
+    void
+    riff_stream::
+    read (T & x)
+    {
+        m_stream.read( reinterpret_cast <wrapped_stream_type::char_type*> ( &x ), sizeof( x ) );
+    }
 }
