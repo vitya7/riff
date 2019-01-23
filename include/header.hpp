@@ -10,8 +10,8 @@ namespace riff
 
         dword_t size;
 
-        bool operator == (header const& h);
+        bool operator == (header const& h) const;
 
-        bool operator != (header const& h);
+        bool operator != (header const& h) const;
     };
 }

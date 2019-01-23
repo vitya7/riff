@@ -4,14 +4,14 @@ namespace riff
 {
     bool
     header::
-    operator == (header const& h)
+    operator == (header const& h) const
     {
         return id == h.id;
     }
 
     bool
     header::
-    operator != (header const& h)
+    operator != (header const& h) const
     {
         return id != h.id;
     }
