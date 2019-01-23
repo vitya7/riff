@@ -1,22 +1,11 @@
 #pragma once
 
-#include "riff_types.hpp"
+#include "header.hpp"
 
 #include <fstream>
 
 namespace riff
 {
-
-//    constexpr fourcc WAVE_ID = { 'W', 'A', 'V', 'E' };
-
-    struct header
-    {
-        fourcc  id;
-        dword_t size;
-
-        bool operator == (header const& h) { return id == h.id; }
-        bool operator != (header const& h) { return id != h.id; }
-    };
 
     constexpr fourcc RIFF_ID = { 'R', 'I', 'F', 'F' };
 
