@@ -1,7 +1,21 @@
 #include "header_iterator.hpp"
 
+#include <algorithm>
+
 namespace riff
 {
+    std::optional <header>
+    find_header (riff_stream & stream, fourcc const& id)
+    {
+        header_iterator first { stream };
+        header_iterator last {};
+
+        auto result = std::find( first, last, header {.id = id} );
+
+        return result == last ? std::nullopt : std::make_optional( *result );
+    }
+
+
     header_iterator::
     header_iterator (stream_type & stream)
         : p_stream { &stream }
@@ -61,7 +75,7 @@ namespace riff
     {
         if( p_stream )
         {
-            header_iterator tmp = *this;
+            auto tmp = *this;
 
             ++(*this);
 
@@ -79,7 +93,7 @@ namespace riff
     {
         if( p_stream )
         {
-            p_stream->read( m_header );
+            read( *p_stream, m_header );
         }
     }
 }

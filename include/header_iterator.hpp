@@ -2,8 +2,12 @@
 
 #include "riff_stream.hpp"
 
+#include <optional>
+
 namespace riff
 {
+    std::optional <header> find_header (riff_stream &, fourcc const&);
+
     class header_iterator
     {
     public :
