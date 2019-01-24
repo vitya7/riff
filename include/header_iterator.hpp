@@ -8,8 +8,8 @@ namespace riff
     {
     public :
         using value_type        = header;
-        using pointer	        = header const*;
-        using reference	        = header const&;
+        using pointer	        = value_type const*;
+        using reference	        = value_type const&;
         using difference_type   = void;
         using iterator_category	= std::input_iterator_tag;
 
@@ -34,13 +34,13 @@ namespace riff
 
         header_iterator   operator ++ (int);
 
-        constexpr static header DEFAULT_HEADER = { .id = make_fourcc( "DFLT" ), .size = 0 };
+        constexpr static value_type DEFAULT_HEADER = { .id = make_fourcc( "DFLT" ), .size = 0 };
 
     private :
 
         void update_proxy_object ();
 
-        header m_header = DEFAULT_HEADER;
+        value_type m_header = DEFAULT_HEADER;
 
         stream_type *p_stream = nullptr;
     };
