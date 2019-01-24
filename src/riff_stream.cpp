@@ -2,7 +2,6 @@
 
 namespace riff
 {
-
     riff_stream::
     riff_stream (std::string const& path)
     {
@@ -85,7 +84,7 @@ namespace riff
 
         if( m_header.id != RIFF_ID )
         {
-            throw std::logic_error{ "open failure : riff chunk not found in file " + m_path };
+            throw std::logic_error{ "open failure : 'RIFF' chunk not found in file " + m_path };
         }
     }
 }
