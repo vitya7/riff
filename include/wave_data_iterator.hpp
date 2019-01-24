@@ -154,7 +154,10 @@ namespace riff
     wave_data_iterator <Sample>::
     update_proxy_object ()
     {
-        read( *p_stream, m_sample );
+        if( p_stream )
+        {
+            read( *p_stream, m_sample );
+        }
     }
 
     template <class Sample>
