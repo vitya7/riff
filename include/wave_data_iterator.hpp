@@ -65,12 +65,9 @@ namespace riff
     wave_data_iterator (stream_type & stream)
         : p_stream { &stream }
     {
-        header_iterator first { stream };
-        header_iterator last {};
+        auto result = find_header( stream, data_ID );
 
-        auto result = std::find( first, last, header {.id = data_ID} );
-
-        if( result == last )
+        if( ! result.has_value() )
         {
             throw std::logic_error{ "wave_data_iterator failure : 'data' chunk not found in file " + stream.get_path() };
         }
