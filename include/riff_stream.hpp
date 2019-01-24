@@ -1,14 +1,12 @@
 #pragma once
 
 #include "header.hpp"
+#include "riff_const.hpp"
 
 #include <fstream>
-#include <algorithm>
 
 namespace riff
 {
-    constexpr fourcc RIFF_ID = { 'R', 'I', 'F', 'F' };
-
     class riff_stream
     {
     public :
@@ -44,6 +42,9 @@ namespace riff
         void read (T &);
 
         friend class header_iterator;
+
+        template <class Sample>
+        friend class wave_data_iterator;
 
     private :
 

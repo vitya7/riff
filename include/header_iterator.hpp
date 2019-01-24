@@ -34,7 +34,7 @@ namespace riff
 
         header_iterator   operator ++ (int);
 
-        constexpr static header DEFAULT_HEADER = { .id = {'D', 'F', 'L', 'T'}, .size = 0 };
+        constexpr static header DEFAULT_HEADER = { .id = make_fourcc( "DFLT" ), .size = 0 };
 
     private :
 
