@@ -6,7 +6,7 @@ namespace riff
 {
     struct fmt_chunk;
 
-    void read_fmt_chunk (riff_stream &, fmt_chunk &);
+    fmt_chunk read_fmt_chunk (riff_stream &);
 
     struct fmt_chunk
     {

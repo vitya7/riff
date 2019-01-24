@@ -4,7 +4,7 @@
 
 namespace riff
 {
-    void read_fmt_chunk (riff_stream & stream, fmt_chunk & chunk)
+    fmt_chunk read_fmt_chunk (riff_stream & stream)
     {
         auto fmt_head = find_header( stream, fmt__ID );
 
@@ -12,6 +12,8 @@ namespace riff
         {
             throw std::logic_error{ "read_fmt_chunk failure : 'fmt ' chunk not found in file " + stream.get_path() };
         }
+
+        fmt_chunk chunk;
 
         chunk.head = *fmt_head;
 
@@ -21,5 +23,7 @@ namespace riff
         read( stream, chunk.avg_bytes_per_sec );
         read( stream, chunk.block_align       );
         read( stream, chunk.bits_per_sample   );
+
+        return chunk;
     }
 }
