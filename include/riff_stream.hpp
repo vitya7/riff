@@ -7,6 +7,13 @@
 
 namespace riff
 {
+
+    class riff_stream;
+
+    template <class T>
+    void read (riff_stream &, T &);
+
+
     class riff_stream
     {
     public :
@@ -38,15 +45,19 @@ namespace riff
 
         fourcc const& get_format () const&;
 
-        template <class T>
-        void read (T &);
 
         friend class header_iterator;
 
         template <class Sample>
         friend class wave_data_iterator;
 
+        template <class T>
+        friend void read (riff_stream &, T &);
+
     private :
+
+        template <class T>
+        void read (T &);
 
         void init ();
 
@@ -65,5 +76,11 @@ namespace riff
     read (T & x)
     {
         m_stream.read( reinterpret_cast <wrapped_stream_type::char_type*> ( &x ), sizeof( x ) );
+    }
+
+    template <class T>
+    void read (riff_stream & stream, T & x)
+    {
+        stream.read( x );
     }
 }
