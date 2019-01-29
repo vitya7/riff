@@ -17,10 +17,11 @@ namespace riff
         using stream_type = riff_stream;
         using pos_type = stream_type::wrapped_stream_type::pos_type;
 
+
         wave_data_iterator () = default;
 
         explicit
-        wave_data_iterator (stream_type & stream);
+        wave_data_iterator (stream_type & stream, value_type sample = value_type());
 
         bool operator == (wave_data_iterator const& it) const;
 
@@ -48,9 +49,9 @@ namespace riff
 
         pos_type m_end_pos = -1;
 
-        value_type m_sample;
-
         stream_type *p_stream = nullptr;
+
+        value_type m_sample;
 
     };
 }
@@ -62,8 +63,9 @@ namespace riff
 {
     template <class Sample>
     wave_data_iterator <Sample>::
-    wave_data_iterator (stream_type & stream)
+    wave_data_iterator (stream_type & stream, value_type sample)
         : p_stream { &stream }
+        , m_sample ( std::move (sample) )
     {
         auto result = find_header( stream, data_ID );
 
