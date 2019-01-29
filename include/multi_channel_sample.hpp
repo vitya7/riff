@@ -6,35 +6,31 @@
 
 namespace riff
 {
-    template <class T = int16_t>
+
     class multi_channel_sample
     {
     public :
 
-        using value_type = T;
-        using data_type = std::vector <value_type>;
+        using buffer_type = std::vector <uint8_t>;
 
         multi_channel_sample () = default;
 
         explicit
-        multi_channel_sample (word_t num_of_channels, word_t bits_per_sample)
-            : m_num_of_channels ( num_of_channels )
-            , m_bits_per_sample ( bits_per_sample )
-            , m_data            ( num_of_channels )
-        {}
+        multi_channel_sample (word_t num_of_channels_, word_t bits_per_sample_);
 
         explicit
-        multi_channel_sample (fmt_chunk const& fmt)
-            : multi_channel_sample ( fmt.num_of_channels, fmt.bits_per_sample )
-        {}
+        multi_channel_sample (fmt_chunk const& fmt);
 
-        word_t num_of_channels () const { return m_num_of_channels; }
+        word_t num_of_channels () const;
 
-        word_t bits_per_sample () const { return m_bits_per_sample; }
+        word_t bits_per_sample () const;
 
-        word_t bytes_per_sample () const { return m_bits_per_sample / 8 + (m_bits_per_sample % 8 != 0); }
+        word_t bytes_per_sample () const;
 
-        data_type const& data () const& { return m_data; }
+        void const* get_ptr (size_t pos) const&;
+
+        template <class T>
+        T const& get (size_t pos) const&;
 
     private :
 
@@ -42,22 +38,28 @@ namespace riff
 
         word_t m_bits_per_sample = 0;
 
-        data_type m_data;
+        buffer_type m_buffer;
     };
 
     template <class T>
-    struct read_detail < multi_channel_sample <T> >
+    T const&
+    multi_channel_sample::
+    get (size_t pos) const&
+    {
+        return *reinterpret_cast <T const*> ( get_ptr( pos ) );
+    }
+
+    template <>
+    struct read_detail <multi_channel_sample>
     {
         inline
-        void operator () (riff_stream & stream, multi_channel_sample <T> & sample) const
+        void operator () (riff_stream & stream, multi_channel_sample & sample) const
         {
-            const auto sz = sample.bytes_per_sample();
-
-            for(auto & cx : sample.data())
+            for(size_t pos = 0, size = sample.num_of_channels(); pos != size; pos++ )
             {
-                auto & x = const_cast < typename multi_channel_sample <T>::value_type & > (cx);
+                auto ptr = const_cast <void *> ( sample.get_ptr( pos ) );
 
-                stream.read( &x, sz );
+                stream.read( ptr, sample.bytes_per_sample() );
             }
         }
     };
