@@ -7,12 +7,17 @@
 
 namespace riff
 {
-
     class riff_stream;
 
     template <class T>
     void read (riff_stream &, T &);
 
+    template <class T>
+    struct read_detail;
+}
+
+namespace riff
+{
 
     class riff_stream
     {
@@ -52,12 +57,14 @@ namespace riff
         friend class wave_data_iterator;
 
         template <class T>
-        friend void read (riff_stream &, T &);
+        friend struct read_detail;
 
     private :
 
         template <class T>
         void read (T &);
+
+        void read (void*, std::streamsize);
 
         void init ();
 
@@ -75,12 +82,23 @@ namespace riff
     riff_stream::
     read (T & x)
     {
-        m_stream.read( reinterpret_cast <wrapped_stream_type::char_type*> ( &x ), sizeof( x ) );
+        read( &x, sizeof( x ));
     }
+
 
     template <class T>
     void read (riff_stream & stream, T & x)
     {
-        stream.read( x );
+        read_detail <T> {} ( stream, x );
     }
+
+
+    template <class T>
+    struct read_detail
+    {
+        void operator () (riff_stream & stream, T & x) const
+        {
+            stream.read( x );
+        }
+    };
 }

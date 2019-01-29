@@ -77,6 +77,13 @@ namespace riff
 
     void
     riff_stream::
+    read (void* pointer, std::streamsize size)
+    {
+        m_stream.read( reinterpret_cast <wrapped_stream_type::char_type*> ( pointer ), size );
+    }
+
+    void
+    riff_stream::
     init ()
     {
         read( m_header );
