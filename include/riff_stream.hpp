@@ -96,6 +96,7 @@ namespace riff
     template <class T>
     struct read_detail
     {
+        inline
         void operator () (riff_stream & stream, T & x) const
         {
             stream.read( x );
